@@ -1,3 +1,4 @@
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 import requests
 import asyncio
 import aiohttp
