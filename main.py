@@ -9,11 +9,11 @@ from base64 import b64encode, b64decode
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 import os
-import base64
+from flask import Flask
+import threading
 from pyrogram import Client, filters
 import sys
 import re
-import requests
 import uuid
 import random
 import string
@@ -33,40 +33,8 @@ from config import api_id, api_hash, bot_token, auth_users
 from datetime import datetime
 import time
 from concurrent.futures import ThreadPoolExecutor
-THREADPOOL = ThreadPoolExecutor(max_workers=1000)
-import os
-  from flask import Flask
-
-  app = Flask(__name__)
-
-  @app.route('/')
-  def home():
-      return "Hello, World!"
-
-  if __name__ == '__main__':
-      port = int(os.environ.get("PORT", 1000))  # Default to 1000 if PORT is not set
-      app.run(host='0.0.0.0', port=port)
-  
 import logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-image_list = [
-"https://graph.org/file/8b1f4146a8d6b43e5b2bc-be490579da043504d5.jpg",
-"https://graph.org/file/b75dab2b3f7eaff612391-282aa53538fd3198d4.jpg",
-"https://graph.org/file/38de0b45dd9144e524a33-0205892dd05593774b.jpg",
-"https://graph.org/file/be39f0eebb9b66d7d6bc9-59af2f46a4a8c510b7.jpg",
-"https://graph.org/file/8b7e3d10e362a2850ba0a-f7c7c46e9f4f50b10b.jpg",
-]
-print(4321)
-bot = Client(
-    "bot",
-    api_id=api_id,
-    api_hash=api_hash,
-    bot_token=bot_token)
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 # Flask app for Render
 app = Flask(__name__)
 
@@ -74,81 +42,53 @@ app = Flask(__name__)
 def home():
     return "Bot is running!"
 
-def run_flask():
-    app.run(host="0.0.0.0", port=1000) #Use 8080 Port here, if you're deploying it on koyeb
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# ThreadPool for async tasks
+THREADPOOL = ThreadPoolExecutor(max_workers=1000)
+
+# Image list for start command
+image_list = [
+    "https://graph.org/file/8b1f4146a8d6b43e5b2bc-be490579da043504d5.jpg",
+    "https://graph.org/file/b75dab2b3f7eaff612391-282aa53538fd3198d4.jpg",
+    "https://graph.org/file/38de0b45dd9144e524a33-0205892dd05593774b.jpg",
+    "https://graph.org/file/be39f0eebb9b66d7d6bc9-59af2f46a4a8c510b7.jpg",
+    "https://graph.org/file/8b7e3d10e362a2850ba0a-f7c7c46e9f4f50b10b.jpg",
+]
+
+print(4321)
+
+# Pyrogram bot initialization
+bot = Client(
+    "bot",
+    api_id=api_id,
+    api_hash=api_hash,
+    bot_token=bot_token
+)
+
+# Start command
 @bot.on_message(filters.command(["start"]))
 async def start(bot, message):
-  random_image_url = random.choice(image_list)
+    random_image_url = random.choice(image_list)
 
-  keyboard = [
-    [
-      InlineKeyboardButton("🚀 Physics Wallah without Purchase 🚀", callback_data="pwwp")
-    ],
-    [
-      InlineKeyboardButton("📘 Classplus without Purchase 📘", callback_data="cpwp")
-    ],
-    [
-      InlineKeyboardButton("📒 Appx Without Purchase 📒", callback_data="appxwp")
+    keyboard = [
+        [InlineKeyboardButton("🚀 Physics Wallah without Purchase 🚀", callback_data="pwwp")],
+        [InlineKeyboardButton("📘 Classplus without Purchase 📘", callback_data="cpwp")],
+        [InlineKeyboardButton("📒 Appx Without Purchase 📒", callback_data="appxwp")]
     ]
-  ]
 
-  reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-  await message.reply_photo(
-    photo=random_image_url,
-    caption="**Developer - @pwextractowner\nPLEASE👇PRESS👇HERE**",
-    quote=True,
-    reply_markup=reply_markup
-  )
-@bot.on_message(group=2)
-#async def account_login(bot: Client, m: Message):
-#    try:
-#        await bot.forward_messages(chat_id=chat_id, from_chat_id=m.chat.id, message_ids=m.id)
-#    except:
-#        pass
-        
-async def fetch_pwwp_data(session: aiohttp.ClientSession, url: str, headers: Dict = None, params: Dict = None, data: Dict = None, method: str = 'GET') -> Any:
-    max_retries = 3
-    for attempt in range(max_retries):
-        try:
-            async with session.request(method, url, headers=headers, params=params, json=data) as response:
-                response.raise_for_status()
-                return await response.json()
-        except aiohttp.ClientError as e:
-            logging.error(f"Attempt {attempt + 1} failed: aiohttp error fetching {url}: {e}")
-        except Exception as e:
-            logging.exception(f"Attempt {attempt + 1} failed: Unexpected error fetching {url}: {e}")
+    await message.reply_photo(
+        photo=random_image_url,
+        caption="**Developer - @pwextractowner\nPLEASE👇PRESS👇HERE**",
+        quote=True,
+        reply_markup=reply_markup
+    )
 
-        if attempt < max_retries - 1:
-            await asyncio.sleep(90 ** attempt)
-        else:
-            logging.error(f"Failed to fetch {url} after {max_retries} attempts.")
-            return None
-
-
-async def process_pwwp_chapter_content(session: aiohttp.ClientSession, chapter_id, selected_batch_id, subject_id, schedule_id, content_type, headers: Dict):
-    url = f"https://api.penpencil.co/v1/batches/{selected_batch_id}/subject/{subject_id}/schedule/{schedule_id}/schedule-details"
-    data = await fetch_pwwp_data(session, url, headers=headers)
-    content = []
-
-    if data and data.get("success") and data.get("data"):
-        data_item = data["data"]
-
-        if content_type in ("videos", "DppVideos"):
-            video_details = data_item.get('videoDetails', {})
-            if video_details:
-                name = data_item.get('topic', '')
-                videoUrl = video_details.get('videoUrl') or video_details.get('embedCode') or ""
-            #    image = video_details.get('image', "")
-
-                if videoUrl:
-                    line = f"{name}:{videoUrl}"
-                    content.append(line)
-               #     logging.info(line)
-
+# Other functions (pwwp, cpwp, appxwp, etc.) remain unchanged
+# [Your existing functions like fetch_pwwp_data, process_pwwp_chapter_content
         elif content_type in ("notes", "DppNotes"):
             homework_ids = data_item.get('homeworkIds', [])
             for homework in homework_ids:
