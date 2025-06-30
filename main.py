@@ -70,7 +70,7 @@ async def start(bot, message):
 
     await message.reply_photo(
         photo=random_image_url,
-        caption="**Developer - @pwextractowner\nPLEASE👇PRESS👇HERE**",
+        caption="**Developer - @Yes_Paracetamol\nPLEASE👇PRESS👇HERE**",
         quote=True,
         reply_markup=reply_markup
     )
@@ -655,7 +655,7 @@ async def get_cpwp_course_content(session: aiohttp.ClientSession, headers: Dict[
 
                     if url_val.endswith(("master.m3u8", "playlist.m3u8")) and url_val not in fetched_urls:
                         fetched_urls.add(url_val)
-                        headers2 = {'x-access-token': 'eyJjb3Vyc2VJZCI6IjQ1NjY4NyIsInR1dG9ySWQiOm51bGwsIm9yZ0lkIjo0ODA2MTksImNhdGVnb3J5SWQiOm51bGx9'}
+                        headers2 = {'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDAwNDYxNTUuNjg1LCJkYXRhIjp7Il9pZCI6IjY2MjM3NDMyMTZkMDFmZThjMTNhNGExNiIsInVzZXJuYW1lIjoiOTUyMzI1MzIwOCIsImZpcnN0TmFtZSI6IkRldiIsImxhc3ROYW1lIjoiS3VtYXIiLCJvcmdhbml6YXRpb24iOnsiX2lkIjoiNWViMzkzZWU5NWZhYjc0NjhhNzlkMTg5Iiwid2Vic2l0ZSI6InBoeXNpY3N3YWxsYWguY29tIiwibmFtZSI6IlBoeXNpY3N3YWxsYWgifSwiZW1haWwiOiJkZXZrdW1hcjgwNTE3QGdtYWlsLmNvbSIsInJvbGVzIjpbIjViMjdiZDk2NTg0MmY5NTBhNzc4YzZlZiJdLCJjb3VudHJ5R3JvdXAiOiJJTiIsInR5cGUiOiJVU0VSIn0sImlhdCI6MTczOTQ0MTM1NX0.3aNNDJHuAyY0Zkw5Zf5aIQpLEpy2jB7ObjPrvsPxXg4'}
                         task = asyncio.create_task(process_cpwp_url(url_val, name, session, headers2))
                         content_tasks.append(task)
                     else:
