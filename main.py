@@ -655,7 +655,7 @@ async def get_cpwp_course_content(session: aiohttp.ClientSession, headers: Dict[
 
                     if url_val.endswith(("master.m3u8", "playlist.m3u8")) and url_val not in fetched_urls:
                         fetched_urls.add(url_val)
-                        headers2 = {'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDAwNDYxNTUuNjg1LCJkYXRhIjp7Il9pZCI6IjY2MjM3NDMyMTZkMDFmZThjMTNhNGExNiIsInVzZXJuYW1lIjoiOTUyMzI1MzIwOCIsImZpcnN0TmFtZSI6IkRldiIsImxhc3ROYW1lIjoiS3VtYXIiLCJvcmdhbml6YXRpb24iOnsiX2lkIjoiNWViMzkzZWU5NWZhYjc0NjhhNzlkMTg5Iiwid2Vic2l0ZSI6InBoeXNpY3N3YWxsYWguY29tIiwibmFtZSI6IlBoeXNpY3N3YWxsYWgifSwiZW1haWwiOiJkZXZrdW1hcjgwNTE3QGdtYWlsLmNvbSIsInJvbGVzIjpbIjViMjdiZDk2NTg0MmY5NTBhNzc4YzZlZiJdLCJjb3VudHJ5R3JvdXAiOiJJTiIsInR5cGUiOiJVU0VSIn0sImlhdCI6MTczOTQ0MTM1NX0.3aNNDJHuAyY0Zkw5Zf5aIQpLEpy2jB7ObjPrvsPxXg4'}
+                        headers2 = {'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0'}
                         task = asyncio.create_task(process_cpwp_url(url_val, name, session, headers2))
                         content_tasks.append(task)
                     else:
